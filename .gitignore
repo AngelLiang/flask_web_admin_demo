@@ -1,0 +1,29 @@
+!.gitignore
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Python
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+build/
+__pycache__/
+
+# pyvenv
+venv*/
+
+
+*.tar
+*.tar.gz
+
+*.sqlite
+migrations/
+
+.env
