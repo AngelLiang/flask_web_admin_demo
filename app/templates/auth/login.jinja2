@@ -6,7 +6,13 @@
 
 {% extends "auth/base.jinja2" %}
 
-{% block title %}登录{% endblock %}
+{% block title %}
+    {{ config.get('APP_NAME') }} - 登录页面
+{% endblock %}
+
+{% block panel_title %}
+    {{ config.get('APP_NAME') }} - 用户登录
+{% endblock %}
 
 {% block panel_body %}
         

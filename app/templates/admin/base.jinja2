@@ -4,8 +4,10 @@
 <html lang="zh-CN">
   <head>
     {%- block _head -%}
-    <title>{%- block title -%}
-        {%- if admin_view.category -%}{{ admin_view.category }} - {%- endif -%} {{ admin_view.name }}- {{ admin_view.admin.name }}
+    <title>
+        {%- block title -%}
+            {%- if admin_view.category -%}{{ admin_view.category }} - {%- endif -%}
+            {{ admin_view.name }} - {{ admin_view.admin.name }}
         {%- endblock -%} {# title #}
     </title>
 
@@ -216,20 +218,23 @@
                 </div>
             </div>
 -->
+
         <div class="row">
+        <p>
             {%- block access_control -%} 
             {%- endblock -%} {# access_control #}
             {%- block messages -%} 
-                {{ layout.messages() }}
+                <div class="col-lg-12 col-md-12">
+                    {{ layout.messages() }}
+                </div>
             {%- endblock -%}  {# messages #}
             {# store the jinja2 context for form_rules rendering logic #}
             {%- set render_ctx = h.resolve_ctx() -%} 
         </div>
 
-        <div class="row">
-        <br>
-        {%- block body -%} {%- endblock -%} 
-        </div>
+        {# <div class="row"> #}
+            {%- block body -%} {%- endblock -%} 
+        {# </div> #}
 
         </div>
         <!-- /#page-wrapper -->
@@ -273,7 +278,7 @@
     {%- endblock -%} {# tail_js #}
 
     {%- block tail -%} 
-    {%- endblock -%} 
+    {%- endblock -%}    {# tail #}
 
     {%- endblock -%}   {# _body #}
   </body>

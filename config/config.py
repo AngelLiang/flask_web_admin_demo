@@ -10,7 +10,7 @@ app_dir = last_dir
 
 
 class Config(FlaskUserConfig):
-    APP_NAME = "flask web admin demo"
+    APP_NAME = "基于Flask+Bootstrap后台演示"
     USER_APP_NAME = APP_NAME
     # SECRET_KEY
     SECRET_KEY = os.environ.get(
