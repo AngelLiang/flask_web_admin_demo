@@ -3,11 +3,11 @@
 
 how to use:
 
-本文件放在app/user/文件夹下，然后在app/__init__.py初始化:
+本文件放在app/utils/文件夹下，然后在app/__init__.py初始化:
 
 ```
 try:
-    from .user.custom_user_manager import CustomUserManager
+    from .utils.custom_user_manager import CustomUserManager
     user_manager = CustomUserManager()
 except Exception:
     user_manager = UserManager()
@@ -54,7 +54,7 @@ class CustomUserManager(UserManager):
             api_key = request.headers.get(
                 'Authorization') or request.headers.get('APIKEY')
             if api_key:
-                current_app.logger.debug("Got a api key from header")
+                current_app.logger.debug("get a api key from header")
                 # TODO:
                 # user = self.db_manager.UserClass.get_user_by_apikey(api_key)
                 return user
@@ -62,7 +62,7 @@ class CustomUserManager(UserManager):
             # 从URL获取
             api_key = request.args.get('api_key')
             if api_key:
-                current_app.logger.debug("Got a api key from url")
+                current_app.logger.debug("get a api key from url")
                 # TODO:
                 # user = self.db_manager.UserClass.get_user_by_apikey(api_key)
                 return user
@@ -71,7 +71,7 @@ class CustomUserManager(UserManager):
             if request.values:
                 api_key = request.values.get("token")
                 if api_key:
-                    current_app.logger.debug("Got a toke from values")
+                    current_app.logger.debug("get a toke from values")
                     # TODO:
                     # user = self.db_manager.UserClass.get_user_by_apikey(api_key)
                     return user
@@ -87,3 +87,6 @@ class CustomUserManager(UserManager):
             user.login_info_update()
 
         #######################################################################
+        # 其他信号
+        from flask_user.signals import (user_logged_out, user_changed_password,
+                                        user_registered, user_reset_password)
