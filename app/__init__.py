@@ -70,7 +70,7 @@ amdin_index_view = MyAdminIndexView(
 admin = Admin(
     index_view=amdin_index_view,
     template_mode="bootstrap3",
-    name="flask web admin demo",
+    # name="flask web admin demo",
 )
 admin.base_template = "admin/base.jinja2"  # 改为app/templates/admin/base.jinja2
 init_admin_views(admin)
@@ -92,6 +92,7 @@ def create_app(config_name):
 
     # flask-admin
     admin.init_app(app)
+    admin.name = app.config.get("APP_NAME")
 
     # flask-user
     from app.models import User
