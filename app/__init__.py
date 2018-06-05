@@ -10,6 +10,7 @@ curr_dir = os.path.dirname(os.path.realpath(__file__))
 
 ###############################################################################
 # 数据库
+
 # from flask_sqlalchemy import SQLAlchemy
 # db = SQLAlchemy()
 from .database import db
@@ -29,7 +30,7 @@ def get_locale():
 
 
 ###############################################################################
-# 缓存
+# cache
 
 from werkzeug.contrib.cache import SimpleCache, RedisCache
 try:
@@ -37,9 +38,13 @@ try:
     cache.get("connection")  # 连接测试
 except Exception:
     cache = SimpleCache()
+    print("cache is SimpleCache")
+else:
+    print("cache is RedisCache")
 
 ###############################################################################
 # flask-user
+
 try:
     from .utils.custom_user_manager import CustomUserManager
     user_manager = CustomUserManager()
@@ -66,7 +71,7 @@ admin = Admin(
     template_mode="bootstrap3",
     name="flask web admin demo",
 )
-admin.base_template = "admin/base.jinja2"
+admin.base_template = "admin/base.jinja2"  # 改为app/templates/admin/base.jinja2
 init_admin_views(admin)
 
 ###############################################################################
@@ -87,9 +92,11 @@ def create_app(config_name):
     # flask-admin
     admin.init_app(app)
 
+    # flask-user
     from app.models import User
     user_manager.init_app(app, db, User)
 
+    # views
     from app.views import views
     app.register_blueprint(views)
 
