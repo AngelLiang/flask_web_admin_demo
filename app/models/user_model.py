@@ -12,6 +12,7 @@ from flask_user import UserMixin, current_user
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired, BadSignature
 
 # database
+from app import user_manager
 from app.database import db, SurrogatePK, CRUDMixin, Model, reference_col, relationship, backref, aliased
 
 # model
@@ -96,13 +97,13 @@ class User(Model, SurrogatePK, UserMixin):
     def password(self, password):
         """设置密码hash"""
         # for flask-user
-        from app import user_manager
+        # from app import user_manager
         self.password_hash = user_manager.password_manager.hash_password(
             password)
 
     def verify_password(self, password):
         """验证密码"""
-        from app import user_manager
+        # from app import user_manager
         ret = user_manager.password_manager.verify_password(
             password, self.password)
         return ret

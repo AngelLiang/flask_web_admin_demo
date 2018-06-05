@@ -1,6 +1,7 @@
 # coding=utf-8
 
-import os, sys
+import os
+import sys
 from flask import Flask, jsonify, url_for, request, current_app, session
 
 # config

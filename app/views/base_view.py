@@ -13,6 +13,7 @@ from app.models import User
 
 
 class MyBaseView(BaseView):
+
     def is_accessible(self):
         # 验证登录并验证权限
         return current_user.is_authenticated
@@ -24,6 +25,7 @@ class MyBaseView(BaseView):
 
 
 class MyAdminIndexView(AdminIndexView):
+
     def is_accessible(self):
         # 验证登录并验证权限
         return current_user.is_authenticated
@@ -34,7 +36,7 @@ class MyAdminIndexView(AdminIndexView):
         # raise abort(401)
 
     @expose("/")
-    @login_required
+    # @login_required
     def dashboard(self):
         """dashboard"""
         return self.render("admin/dashboard.jinja2")
