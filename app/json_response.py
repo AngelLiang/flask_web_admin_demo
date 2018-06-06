@@ -4,7 +4,7 @@ import copy
 from flask import request
 
 
-class JsonResponse:
+class JsonResponse(object):
 
     success_dict = {"status": 1, "messge": "success!"}
 

@@ -34,7 +34,7 @@ class Config(FlaskUserConfig):
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-                              'sqlite:///' + os.path.join(app_dir, 'data-dev.sqlite')
+        'sqlite:///' + os.path.join(app_dir, 'data-dev.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     # jinja2模板自动加载
@@ -47,13 +47,13 @@ class TestingConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
-                              'sqlite:///' + os.path.join(app_dir, 'data-test.sqlite')
+        'sqlite:///' + os.path.join(app_dir, 'data-test.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-                              'sqlite:///' + os.path.join(app_dir, 'data.sqlite')
+        'sqlite:///' + os.path.join(app_dir, 'data.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 

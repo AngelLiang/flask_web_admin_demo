@@ -3,7 +3,7 @@
 __all__ = ("FlaskUserConfig", )
 
 
-class FlaskUserConfig:
+class FlaskUserConfig(object):
     # Flask-Mail settings
     # Flask-Mail SMTP server settings
     MAIL_SERVER = 'smtp.gmail.com'
