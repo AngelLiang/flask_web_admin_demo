@@ -92,3 +92,6 @@ class CustomBaseModelView(ModelView):
 
     def get_count_query(self):
         return super(CustomBaseModelView, self).get_count_query()
+
+    def get_one(self, id):
+        return super(CustomBaseModelView, self).get_one(id)

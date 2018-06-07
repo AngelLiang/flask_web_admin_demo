@@ -13,7 +13,11 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, Signatur
 
 # database
 from app import user_manager
-from app.database import db, SurrogatePK, CRUDMixin, Model, reference_col, relationship, backref, aliased
+from app.database import (db, SurrogatePK, CRUDMixin,
+                          Model, reference_col, relationship)
+
+# cache
+from app.model_cache import ModelCacheMixin
 
 # model
 
@@ -50,7 +54,7 @@ class Role(Model, SurrogatePK):
         return superadmin, chief, admin, default
 
 
-class User(Model, SurrogatePK, UserMixin):
+class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
     """user model"""
     __tablename__ = 'users'
     username = db.Column(db.String(32), unique=True, index=True)  # username
@@ -69,17 +73,6 @@ class User(Model, SurrogatePK, UserMixin):
     last_login_datetime = db.Column(db.DateTime, nullable=True)  # 上次登录时间
     last_login_ip = db.Column(db.String(32), nullable=True)  # 上次登录IP
     current_login_ip = db.Column(db.String(32), nullable=True)  # 当前登录IP
-
-    def login_info_update(self, auto_commit=True):
-        import datetime as dt
-        from flask import request
-        self.last_login_datetime = self.current_login_datetime
-        self.current_login_datetime = dt.datetime.now()
-        self.last_login_ip = self.current_login_ip
-        self.current_login_ip = request.remote_addr
-        if auto_commit:
-            db.session.add(self)
-            db.session.commit()
 
     roles = db.relationship(
         'Role',
@@ -118,3 +111,15 @@ class User(Model, SurrogatePK, UserMixin):
             self.username.encode('utf-8')).hexdigest()
         return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
             url=url, hash=hash, size=size, default=default, rating=rating)
+
+    def login_info_update(self, auto_commit=True):
+        """登录信息更新"""
+        # import datetime as dt
+        # from flask import request
+        self.last_login_datetime = self.current_login_datetime
+        self.current_login_datetime = dt.datetime.now()
+        self.last_login_ip = self.current_login_ip
+        self.current_login_ip = request.remote_addr
+        if auto_commit:
+            db.session.add(self)
+            db.session.commit()

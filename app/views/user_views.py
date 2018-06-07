@@ -83,6 +83,22 @@ class UsersModelView(CustomBaseModelView):
         },
     }
 
+    def get_query(self):
+        return super(UsersModelView, self).get_query()
+
+    def get_count_query(self):
+        return super(UsersModelView, self).get_count_query()
+
+    # def get_one(self, id):
+    #     prefix = "user"
+    #     if self.model.has_cache(prefix, id):
+    #         current_app.logger.debug("get model form CACHE: id={}".format(id))
+    #         return self.model.get_cache_by_id(prefix, id)
+    #     current_app.logger.debug("get model form DATABASE: id={}".format(id))
+    #     model = super(UsersModelView, self).get_one(id)
+    #     model.add_cache(prefix)  # add cache
+    #     return model
+
 
 class RolesModelView(CustomBaseModelView):
     """

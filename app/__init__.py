@@ -3,6 +3,7 @@
 import os
 import sys
 from flask import Flask, jsonify, url_for, request, current_app, session
+from flask_debugtoolbar import DebugToolbarExtension
 
 # config
 from config.config import config
@@ -32,6 +33,7 @@ def get_locale():
 
 ###############################################################################
 # cache
+# 首选redis，次选进程内缓存
 
 from werkzeug.contrib.cache import SimpleCache, RedisCache
 try:
@@ -76,6 +78,11 @@ admin.base_template = "admin/base.jinja2"  # 改为app/templates/admin/base.jinj
 init_admin_views(admin)
 
 ###############################################################################
+# toolbar
+
+toolbar = DebugToolbarExtension()
+
+###############################################################################
 
 
 def create_app(config_name):
@@ -97,6 +104,8 @@ def create_app(config_name):
     # flask-user
     from app.models import User
     user_manager.init_app(app, db, User)
+
+    toolbar.init_app(app)
 
     # views
     from app.views import views
