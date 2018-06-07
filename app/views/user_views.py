@@ -18,13 +18,13 @@ from app.models import User, Role
 from . import views
 
 # flask admin base mode view
-from .base_view import MyBaseModelView
+from .base_view import CustomBaseModelView
 
 ##########################################################################
 # amdin model view
 
 
-class UsersModelView(MyBaseModelView):
+class UsersModelView(CustomBaseModelView):
     """Users Model View"""
     can_create = True
     can_delete = False
@@ -84,7 +84,7 @@ class UsersModelView(MyBaseModelView):
     }
 
 
-class RolesModelView(MyBaseModelView):
+class RolesModelView(CustomBaseModelView):
     """
     Roles Model View
     """

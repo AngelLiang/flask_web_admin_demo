@@ -12,7 +12,8 @@ from flask_admin.model import BaseModelView
 from app.models import User
 
 
-class MyBaseView(BaseView):
+class CustomBaseView(BaseView):
+    """BaseView客制化"""
 
     def is_accessible(self):
         # 验证登录并验证权限
@@ -24,7 +25,7 @@ class MyBaseView(BaseView):
         # raise abort(401)
 
 
-class MyAdminIndexView(AdminIndexView):
+class CustomAdminIndexView(AdminIndexView):
 
     def is_accessible(self):
         # 验证登录并验证权限
@@ -59,8 +60,8 @@ class MyAdminIndexView(AdminIndexView):
             return self.render('admin/errors/404.jinja2')
 
 
-class MyBaseModelView(ModelView):
-
+class CustomBaseModelView(ModelView):
+    """BaseModelView客制化"""
     can_create = True
     can_delete = True
     can_view_details = True
@@ -69,8 +70,8 @@ class MyBaseModelView(ModelView):
     column_display_pk = False
 
     # 页数
+    # can_set_page_size = True
     page_size = 20
-    can_set_page_size = True
 
     # modal
     # create_modal = True
@@ -87,7 +88,7 @@ class MyBaseModelView(ModelView):
         # raise abort(401)
 
     def get_query(self):
-        return super().get_query()
+        return super(CustomBaseModelView, self).get_query()
 
     def get_count_query(self):
-        return super().get_count_query()
+        return super(CustomBaseModelView, self).get_count_query()

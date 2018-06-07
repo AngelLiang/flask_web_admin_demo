@@ -15,13 +15,13 @@ from app.models import User, Role
 from . import views
 
 # flask admin base mode view
-from .base_view import MyBaseModelView
+from .base_view import CustomBaseModelView
 
 ##########################################################################
 # 以下是一个view模板示例
 
 
-class TemplateModelView(MyBaseModelView):
+class TemplateModelView(CustomBaseModelView):
     pass
 
 

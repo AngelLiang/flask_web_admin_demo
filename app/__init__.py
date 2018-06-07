@@ -60,9 +60,9 @@ except Exception:
 
 from flask_admin import Admin
 from app.views import init_admin_views
-from app.views.base_view import MyAdminIndexView
+from app.views.base_view import CustomAdminIndexView
 
-amdin_index_view = MyAdminIndexView(
+amdin_index_view = CustomAdminIndexView(
     name="仪表盘",
     menu_icon_type="glyph",
     menu_icon_value="glyphicon-home",
@@ -101,6 +101,10 @@ def create_app(config_name):
     # views
     from app.views import views
     app.register_blueprint(views)
+
+    # jinja2 env
+    from app.jinja2_env import init_jinja2_env
+    init_jinja2_env(app)
 
     # error pages
     # from app.errors import init_errors_page
