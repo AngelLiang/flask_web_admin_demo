@@ -99,15 +99,9 @@ class RolesModelView(MyBaseModelView):
 
 
 def init_admin_view(admin: Admin):
-    admin.add_view(
-        UsersModelView(
-            User,
-            db.session,
-            name=u"用户",
-            endpoint="users",
-            menu_icon_type="glyph",
-            menu_icon_value="glyphicon-user",
-            category="用户管理"))
-    admin.add_view(
-        RolesModelView(
-            Role, db.session, name=u"角色", endpoint="roles", category="用户管理"))
+    admin.add_view(UsersModelView(User, db.session, name=u"用户",
+                                  endpoint="users", menu_icon_type="glyph",
+                                  menu_icon_value="glyphicon-user",
+                                  category="用户管理"))
+    admin.add_view(RolesModelView(
+        Role, db.session, name=u"角色", endpoint="roles", category="用户管理"))
