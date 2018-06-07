@@ -1,7 +1,6 @@
 # coding=utf-8
 
 import os
-from .config_flask_user import FlaskUserConfig
 
 curr_dir = os.path.abspath(os.path.dirname(__file__))
 last_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -9,7 +8,7 @@ last_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 app_dir = last_dir
 
 
-class Config(FlaskUserConfig):
+class Config(object):
     APP_NAME = "基于Flask+Bootstrap后台演示"
     USER_APP_NAME = APP_NAME
     # SECRET_KEY
