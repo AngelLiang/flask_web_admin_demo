@@ -6,7 +6,7 @@ from flask import Flask, jsonify, url_for, request, current_app, session
 
 
 # config
-from config.config import config
+from config import config
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 
