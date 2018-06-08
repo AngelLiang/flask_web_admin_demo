@@ -10,9 +10,9 @@ app_dir = last_dir
 
 class Config(object):
     APP_NAME = "基于Flask+Bootstrap后台演示"
-    USER_APP_NAME = APP_NAME
+    APPLICATION_ROOT = app_dir
     # SECRET_KEY
-    SECRET_KEY = os.environ.get(
+    SECRET_KEY = os.getenv(
         'SECRET_KEY') or 'hard to guess string and longer than 32 byte!'
 
     # 数据库session在请求后自动提交
@@ -32,7 +32,7 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = os.getenv('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(app_dir, 'data-dev.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
@@ -45,13 +45,15 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
+    SQLALCHEMY_DATABASE_URI = os.getenv('TEST_DATABASE_URL') or \
         'sqlite:///' + os.path.join(app_dir, 'data-test.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+    DEBUG = False
+    DEBUG_TB_ENABLED = False
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL') or \
         'sqlite:///' + os.path.join(app_dir, 'data.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 

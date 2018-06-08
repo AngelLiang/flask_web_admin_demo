@@ -105,6 +105,7 @@ def create_app(config_name):
     from app.models import User
     from config.config_flask_user import FlaskUserConfig
     app.config.from_object(FlaskUserConfig)  # 添加 FlaskUserConfig 配置
+    app.config["USER_APP_NAME"] = app.config["APP_NAME"]
     user_manager.init_app(app, db, User)
 
     toolbar.init_app(app)

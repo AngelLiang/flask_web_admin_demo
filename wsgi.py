@@ -13,10 +13,7 @@ from app import create_app
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 
-app = create_app(os.getenv('FLASK_ENV') or 'default')
-
-if __name__ == '__main__':
-    app.run()
+app = create_app(os.getenv('FLASK_ENV') or 'prodection')
 
 ###############################################################################
 
