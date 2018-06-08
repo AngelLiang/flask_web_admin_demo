@@ -1,6 +1,7 @@
 # coding=utf-8
 
-from .compat import string_types
+# from .compat import string_types
+from six import string_types
 
 from sqlalchemy.orm import backref, aliased
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
