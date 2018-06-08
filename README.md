@@ -10,26 +10,17 @@ flask web 后台模板
 
 ## 快速开始
 
-Windows PowerShell pip：
-
-```PowerShell
-python3 -m venv venv
-.\venv\Scripts\activate
-(venv) python -m pip install --upgrade pip
-(venv) pip3 install -U setuptools
-(venv) pip3 install -r .\requirements.txt
-(venv) flask initdb
-(venv) flask createsuperuser
-(venv) flask run
-```
-
-Windows PowerShell pipenv：
+Windows PowerShell pipenv+pip：
 
 ```PowerShell
 # option
-$env:PIPENV_VENV_IN_PROJECT = "/path/to/project"
+$env:PIPENV_VENV_IN_PROJECT = "."
 pipenv install
+
 pipenv shell
+# or
+.\.venv\Scripts\activate
+
 flask initdb
 flask createsuperuser
 flask run

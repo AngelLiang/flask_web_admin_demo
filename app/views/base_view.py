@@ -16,7 +16,7 @@ class CustomBaseView(BaseView):
     """BaseView客制化"""
 
     def is_accessible(self):
-        # 验证登录并验证权限
+        # 验证登录和权限
         return current_user.is_authenticated
 
     def inaccessible_callback(self, name, **kwargs):
@@ -28,11 +28,9 @@ class CustomBaseView(BaseView):
 class CustomAdminIndexView(AdminIndexView):
 
     def is_accessible(self):
-        # 验证登录并验证权限
         return current_user.is_authenticated
 
     def inaccessible_callback(self, name, **kwargs):
-        # redirect to login page if user doesn't have access
         return redirect(url_for('user.login', next=request.url))
         # raise abort(401)
 

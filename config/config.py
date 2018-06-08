@@ -10,10 +10,9 @@ app_dir = last_dir
 
 class Config(object):
     APP_NAME = "基于Flask+Bootstrap后台演示"
-    APPLICATION_ROOT = app_dir
     # SECRET_KEY
-    SECRET_KEY = os.getenv(
-        'SECRET_KEY') or 'hard to guess string and longer than 32 byte!'
+    SECRET_KEY = os.getenv('SECRET_KEY') or \
+        'hard to guess string and longer than 32 byte!'
 
     # 数据库session在请求后自动提交
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
@@ -23,7 +22,9 @@ class Config(object):
 
     FLASK_ADMIN_THEME_FOLDER = "sb-admin-2"
 
-    # USE_X_SENDFILE = True   # default False
+    # toobar
+    DEBUG_TB_ENABLED = True
+    DEBUG_TB_INTERCEPT_REDIRECTS = False
 
     @staticmethod
     def init_app(app):

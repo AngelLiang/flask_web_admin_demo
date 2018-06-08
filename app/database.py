@@ -1,6 +1,5 @@
 # coding=utf-8
 
-# from .compat import string_types
 from six import string_types
 
 from sqlalchemy.orm import backref, aliased
@@ -103,9 +102,6 @@ class SurrogatePK(object):
                 isinstance(record_id, (int, float))), ):
             return cls.query.get(int(record_id))
         return None
-
-
-
 
 
 def reference_col(tablename, nullable=False, pk_name='id', **kwargs):

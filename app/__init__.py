@@ -49,13 +49,13 @@ else:
 # flask-user
 
 try:
-    from .utils.custom_user_manager import CustomUserManager
+    from .custom_flask_user import CustomUserManager
     user_manager = CustomUserManager()
-    print("user_manager init from custom_user_manager")
 except Exception:
     from flask_user import UserManager
     user_manager = UserManager(None, None, None)
-    print("user_manager init from flask_user")
+
+print("user_manager creata by {}".format(user_manager.__class__.__name__))
 
 ###############################################################################
 # flask admin

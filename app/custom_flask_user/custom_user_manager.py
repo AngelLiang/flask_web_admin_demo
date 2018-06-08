@@ -17,20 +17,25 @@ except Exception:
 
 from flask import current_app
 from flask_user import UserManager
-
-__all__ = ("CustomUserManager", )
+from .custom_login_form import CustomLoginForm
 
 
 class CustomUserManager(UserManager):
     """客制化UserManager"""
 
     def __init__(self, app=None, db=None, UserClass=None, **kwargs):
-        super().__init__(app, db, UserClass, **kwargs)
+        super(CustomUserManager, self).__init__(app, db, UserClass, **kwargs)
 
     def customize(self, app):
         """
         flask-user 的 UserManager 客制化
         """
+
+        self.app = app
+
+        #######################################################################
+        # 表单
+        self.LoginFormClass = CustomLoginForm
 
         #######################################################################
         # 客制化 flask-login 的 login_manager
