@@ -17,8 +17,8 @@ build/
 __pycache__/
 
 # pyvenv
-venv*/
-
+venv*
+.venv*
 
 *.tar
 *.tar.gz
@@ -26,4 +26,5 @@ venv*/
 *.sqlite
 migrations/
 
+### env
 .env

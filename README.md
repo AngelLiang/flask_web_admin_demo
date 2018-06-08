@@ -8,9 +8,9 @@ flask web 后台模板
 - flask-admin
 - start-bootstrap-admin-2
 
-# 快速开始
+## 快速开始
 
-Windows PowerShell：
+Windows PowerShell pip：
 
 ```PowerShell
 python3 -m venv venv
@@ -23,7 +23,19 @@ python3 -m venv venv
 (venv) flask run
 ```
 
-# 效果图
+Windows PowerShell pipenv：
+
+```PowerShell
+# option
+$env:PIPENV_VENV_IN_PROJECT = "/path/to/project"
+pipenv install
+pipenv shell
+flask initdb
+flask createsuperuser
+flask run
+```
+
+## 效果图
 
 ![login](screenshot/login.png)
 

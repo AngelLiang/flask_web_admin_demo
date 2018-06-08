@@ -3,7 +3,7 @@
 import os
 import sys
 from flask import Flask, jsonify, url_for, request, current_app, session
-from flask_debugtoolbar import DebugToolbarExtension
+
 
 # config
 from config.config import config
@@ -80,12 +80,14 @@ init_admin_views(admin)
 ###############################################################################
 # toolbar
 
+from flask_debugtoolbar import DebugToolbarExtension
 toolbar = DebugToolbarExtension()
 
 ###############################################################################
 
 
 def create_app(config_name):
+    # app
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
@@ -105,18 +107,19 @@ def create_app(config_name):
     from app.models import User
     from config.config_flask_user import FlaskUserConfig
     app.config.from_object(FlaskUserConfig)  # 添加 FlaskUserConfig 配置
-    app.config["USER_APP_NAME"] = app.config["APP_NAME"]
+    app.config["USER_APP_NAME"] = app.config.get("APP_NAME")
     user_manager.init_app(app, db, User)
 
+    # toolbar
     toolbar.init_app(app)
-
-    # views
-    from app.views import views
-    app.register_blueprint(views)
 
     # jinja2 env
     from app.jinja2_env import init_jinja2_env
     init_jinja2_env(app)
+
+    # views
+    from app.views import views
+    app.register_blueprint(views)
 
     # error pages
     # from app.errors import init_errors_page
