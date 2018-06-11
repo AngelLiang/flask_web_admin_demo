@@ -9,6 +9,9 @@ usage:
 >>> result = add.delay(23, 42)
 >>> result.wait()
 
+注意事项：
+依赖 Redis 或 RabbitMQ 中间件
+
 """
 from flask import Flask
 from celery import Celery
