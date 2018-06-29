@@ -30,40 +30,43 @@ class UsersModelView(CustomBaseModelView):
 
     column_display_pk = False
 
-    # column_list = (
-    #     User.username,
-    #     User.nickname,
-    #     User.email,
-    # )
+    column_list = (
+        User.username,
+        User.nickname,
+        User.sex,
+        User.phone,
+        User.email,
+        User.active,
+    )
 
     column_labels = {
         "username": u"用户名",
         "email": u"邮箱",
         "nickname": u"昵称",
         "group": u"用户组",
+        "groups": u"用户组",
         "roles": u"角色",
         "phone": u"手机号码",
         "sex": u"性别",
         "active": u"激活",
-        "groups": u"用户组",
-        "org": u"所属组织",
         "create_datetime": u"创建时间",
         "current_login_datetime": u"本次登录时间",
         "last_login_datetime": u"上次登录时间",
         "current_login_ip": u"本次登录IP",
         "last_login_ip": u"上次登录IP",
+        "api_key": u"API密钥",
     }
 
-    column_choices = {
-        'sex': [
-            (SexEnum.male, u"男"),
-            (SexEnum.female, u"女"),
-            (SexEnum.other, u"其他"),
-            (SexEnum.empty, u"未填"),
-        ]
-    }
+    # column_choices = {
+    #     'sex': [
+    #         (SexEnum.male, u"男"),
+    #         (SexEnum.female, u"女"),
+    #         (SexEnum.other, u"其他"),
+    #         (SexEnum.empty, u"未填"),
+    #     ]
+    # }
 
-    column_searchable_list = ('username', )
+    column_searchable_list = ("username", )
 
     # 不显示password
     column_exclude_list = ("password_hash", "password", "avatar_hash")
@@ -75,26 +78,24 @@ class UsersModelView(CustomBaseModelView):
         # "phone",
         "password_hash",
         "avatar_hash",
+        "api_key",
     )
 
     # 表单参数
     form_widget_args = {
         'username': {
-            'disabled': True  # 禁用
+            'disabled': True  # 禁止修改
         },
         "password_hash": {
             'disabled': True
         },
-        "org": {
-            'disabled': True
-        },
     }
 
-    def get_query(self):
-        return super(UsersModelView, self).get_query()
+    # def get_query(self):
+    #     return super(UsersModelView, self).get_query()
 
-    def get_count_query(self):
-        return super(UsersModelView, self).get_count_query()
+    # def get_count_query(self):
+    #     return super(UsersModelView, self).get_count_query()
 
     # def get_one(self, id):
     #     prefix = "user"

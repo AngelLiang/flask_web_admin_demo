@@ -5,5 +5,5 @@ class TimeOut(Exception):
     pass
 
 
-class TokenTimeOut(TimeOut):
+class TokenTimeOutException(TimeOut):
     pass

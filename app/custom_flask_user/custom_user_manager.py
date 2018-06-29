@@ -1,9 +1,9 @@
 # coding=utf-8
 """
 
-how to use:
+usage:
 
-本文件放在app/utils/文件夹下，然后在app/__init__.py初始化:
+本文件放在`app/custom_flask_user`文件夹下，然后在`app/__init__.py`初始化:
 
 ```
 from .custom_flask_user.custom_user_manager import CustomUserManager
@@ -14,6 +14,7 @@ user_manager = CustomUserManager()
 
 from flask import current_app
 from flask_user import UserManager
+from app.exception import TokenTimeOutException
 # from .custom_login_form import CustomLoginForm
 
 
@@ -53,10 +54,10 @@ class CustomUserManager(UserManager):
             # 下面是一个认证链，可以设计成责任链模式
 
             # 从header获取
-            api_key = request.headers.get(
-                'Authorization') or request.headers.get('APIKEY')
+            api_key = request.headers.get('Authorization') or\
+                request.headers.get('APIKEY')
             if api_key:
-                current_app.logger.debug("get a api key from header")
+                current_app.logger.debug("get api key from header")
                 # TODO:
                 # user = self.db_manager.UserClass.get_user_by_apikey(api_key)
                 return user
@@ -64,19 +65,25 @@ class CustomUserManager(UserManager):
             # 从URL获取
             api_key = request.args.get('api_key')
             if api_key:
-                current_app.logger.debug("get a api key from url")
+                current_app.logger.debug("got api key form query string")
                 # TODO:
                 # user = self.db_manager.UserClass.get_user_by_apikey(api_key)
                 return user
 
             # 从表单获取
-            if request.values:
-                api_key = request.values.get("token")
-                if api_key:
-                    current_app.logger.debug("get a toke from values")
-                    # TODO:
-                    # user = self.db_manager.UserClass.get_user_by_apikey(api_key)
-                    return user
+            token = request.values.get("token")
+            if token:
+                current_app.logger.debug("got token")
+                try:
+                    data = self.db_manager.UserClass.verify_token(token)
+                except TokenTimeOutException:
+                    return None
+                else:
+                    user_id = data.get("id")
+                    if user_id:
+                        user = self.db_manager.UserClass.query.get(id)
+                        return user
+            return None
 
         #######################################################################
         # 订阅 帐号登录 信号

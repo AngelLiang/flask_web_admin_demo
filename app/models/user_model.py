@@ -9,18 +9,22 @@ import datetime as dt
 
 from flask import current_app, request
 from flask_user import UserMixin, current_user
-# from werkzeug.security import generate_password_hash, check_password_hash
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired, BadSignature
+from werkzeug.security import generate_password_hash, check_password_hash
 
+from werkzeug.security import gen_salt
 # database
 from app import user_manager
 from app.database import (db, SurrogatePK, CRUDMixin,
                           Model, reference_col, relationship)
 
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, SignatureExpired, BadSignature
+from app.exception import TokenTimeOutException
+
 # cache
 from app.model_cache import ModelCacheMixin
 
 from .utils import enum_value_cb
+from app.compat import u, b2s
 
 # model
 
@@ -29,7 +33,7 @@ class SexEnum(enum.Enum):
     male = "男"
     female = "女"
     other = "其他"
-    empty = ""
+    empty = "未填"
 
 
 class UserRoles(db.Model):
@@ -45,12 +49,13 @@ class UserRoles(db.Model):
 class Role(Model, SurrogatePK):
     """Role model"""
     __tablename__ = 'roles'
-    name = db.Column(db.String(80), unique=True, index=True)  # 角色名称
+    name = db.Column(db.String(80), unique=True,
+                     index=True, nullable=False)  # 角色名称
     description = db.Column(db.String(255))  # 角色描述
 
     def __repr__(self):
         # return '<Role %r>' % self.name
-        return self.description
+        return self.name
 
     @classmethod
     def init_role(cls):
@@ -67,9 +72,13 @@ class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
     username = db.Column(db.String(32), unique=True,
                          index=True, nullable=False)  # username
     password_hash = db.Column(db.String(128))
-    email = db.Column(db.String(128), index=True, default="")  # Email
-    phone = db.Column(db.String(32), index=True, default="")
-    sex = db.Column(db.Enum(SexEnum), default=SexEnum.empty)
+    email = db.Column(db.String(128), default="")  # Email
+    phone = db.Column(db.String(32), default="")
+    # sex = db.Column(
+    #     db.Enum(SexEnum,
+    #             values_callable=enum_value_cb
+    #             ), default=SexEnum.empty)
+    sex = db.Column(db.String(8), default="")
     active = db.Column(db.Boolean(), default=True)
     nickname = db.Column(db.String(32), default="")  # 昵称
     avatar_hash = db.Column(db.String(32))  # 头像hash值
@@ -81,6 +90,8 @@ class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
 
     create_datetime = db.Column(
         db.DateTime, nullable=False, default=dt.datetime.now)  # 创建（注册）时间
+
+    api_key = db.Column(db.String(128))
 
     roles = db.relationship(
         'Role',
@@ -145,17 +156,52 @@ class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
         if commit:
             db.session.commit()
 
-    def to_dict(self):
-        return {
+    def to_dict(self, has_token=True):
+
+        data = {
             "id": self.id,
             "username": self.username,
             "password_hash": self.password_hash,
             "email": self.email,
             "phone": self.phone,
-            "sex": repr(self.sex),
+            # "sex": repr(self.sex),
+            "sex": self.sex,
             "active": self.active,
             "nickname": self.nickname,
             "create_datetime": self.create_datetime,
             "avatar": self.gravatar(),
-            "roles": [role.name for role in self.roles]
+            "roles": [role.name for role in self.roles],
         }
+        if has_token:
+            data.update({"token": self.generate_token()})
+        return data
+
+    def generate_token(self, expiration=60 * 60):
+        """生成access token"""
+        s = Serializer(current_app.config["SECRET_KEY"], expiration)
+
+        # 把 id、username、roles 放进 token
+        token = s.dumps({
+            "id": self.id,
+            "username": self.username,
+            "roles": [role.name for role in self.roles]
+        }).decode()
+
+        return token
+
+    @staticmethod
+    def verify_token(token):
+        """验证token
+        """
+        s = Serializer(current_app.config["SECRET_KEY"])
+        try:
+            data = s.loads(token)
+        except SignatureExpired:
+            raise TokenTimeOutException
+        except Exception:
+            return None
+
+        return data
+
+    def gen_apikey(self):
+        self.api_key = gen_salt(128)
