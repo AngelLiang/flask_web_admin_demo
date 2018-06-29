@@ -5,8 +5,8 @@ from flask.views import MethodView
 from flask_user import current_user, login_required
 
 from app import cache
-from app.json_response import JsonResponse as s_json
-from app.flask_request_check import FlaskRequestCheck as s_check
+from app.utils.json_response import JsonResponse as s_json
+from app.utils.flask_request_check import FlaskRequestCheck as s_check
 
 
 # model

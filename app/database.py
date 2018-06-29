@@ -5,7 +5,7 @@ Flask 常用的 Model 抽象类
 
 import uuid
 from flask import current_app
-from .compat import string_types
+from app.utils.compat import string_types
 # from six import string_types
 
 from sqlalchemy import func, and_, or_

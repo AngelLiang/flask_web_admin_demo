@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from . import cache
+from app.cache import cache
 
 
 class ModelCacheMixin(object):

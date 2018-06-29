@@ -3,7 +3,7 @@
 from functools import wraps
 from flask import request, jsonify
 
-from app.json_response import JsonResponse
+from .json_response import JsonResponse
 
 
 class FlaskRequestCheck(object):

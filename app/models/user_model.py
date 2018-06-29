@@ -21,10 +21,10 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, Signatur
 from app.exception import TokenTimeOutException
 
 # cache
-from app.model_cache import ModelCacheMixin
+from app.utils.model_cache import ModelCacheMixin
 
 from .utils import enum_value_cb
-from app.compat import u, b2s
+from app.utils.compat import u, b2s
 
 # model
 
