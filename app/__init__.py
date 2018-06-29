@@ -6,7 +6,7 @@ from flask import Flask, jsonify, url_for, request, current_app, session
 
 
 # config
-from config import config
+from app.config import config
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -33,36 +33,21 @@ def get_locale():
 
 ###############################################################################
 # cache
-# 首选redis，次选进程内缓存
 
-from werkzeug.contrib.cache import SimpleCache, RedisCache
-try:
-    cache = RedisCache()
-    cache.get("connection")  # 连接测试
-except Exception:
-    cache = SimpleCache()
-    print("cache is SimpleCache")
-else:
-    print("cache is RedisCache")
+from app.cache import cache
 
 ###############################################################################
 # flask-user
 
-try:
-    from .custom_flask_user import CustomUserManager
-    user_manager = CustomUserManager()
-except Exception:
-    from flask_user import UserManager
-    user_manager = UserManager(None, None, None)
-
-print("user_manager creata by {}".format(user_manager.__class__.__name__))
+from .custom_flask_user import CustomUserManager
+user_manager = CustomUserManager()
 
 ###############################################################################
 # flask admin
 
 from flask_admin import Admin
-from app.views import init_admin_views
-from app.views.base_view import CustomAdminIndexView
+from app.flask_admin_views import init_admin_views
+from app.flask_admin_views.base_view import CustomAdminIndexView
 
 amdin_index_view = CustomAdminIndexView(
     name="仪表盘",
@@ -105,13 +90,13 @@ def create_app(config_name):
 
     # flask-user
     from app.models import User
-    from config.config_flask_user import FlaskUserConfig
+    from app.custom_flask_user import FlaskUserConfig
     app.config.from_object(FlaskUserConfig)  # 添加 FlaskUserConfig 配置
     app.config["USER_APP_NAME"] = app.config.get("APP_NAME")
     user_manager.init_app(app, db, User)
 
     # toolbar
-    toolbar.init_app(app)
+    # toolbar.init_app(app)
 
     # jinja2 env
     from app.jinja2_env import init_jinja2_env
@@ -125,5 +110,9 @@ def create_app(config_name):
     # from app.errors import init_errors_page
     # init_errors_page(app)
     amdin_index_view.init_errors_page(app)
+
+    # 慢查询日志
+    from app.database import init_app
+    init_app(app)
 
     return app

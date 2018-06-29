@@ -1,5 +1,6 @@
 # coding=utf-8
 
+import enum
 import time
 import random
 import string
@@ -19,7 +20,16 @@ from app.database import (db, SurrogatePK, CRUDMixin,
 # cache
 from app.model_cache import ModelCacheMixin
 
+# from .utils import enum_value_cb
+
 # model
+
+
+class SexEnum(enum.Enum):
+    male = "男"
+    female = "女"
+    other = "其他"
+    empty = ""
 
 
 class UserRoles(db.Model):
@@ -44,35 +54,33 @@ class Role(Model, SurrogatePK):
 
     @classmethod
     def init_role(cls):
-        superadmin = cls.get_or_create(
-            q={"name": "superadmin"}, description="超级管理员")
+        admin = cls.get_or_create(name=u"管理员")
+        developer = cls.get_or_create(name=u"开发者")
+        default = cls.get_or_create(name=u"默认")
 
-        chief = cls.get_or_create(q={"name": "chief"}, description="主管")
-        admin = cls.get_or_create(q={"name": "admin"}, description="管理员")
-        default = cls.get_or_create(q={"name": "default"}, description="默认")
-
-        return superadmin, chief, admin, default
+        return admin, developer, default
 
 
 class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
     """user model"""
     __tablename__ = 'users'
-    username = db.Column(db.String(32), unique=True, index=True)  # username
+    username = db.Column(db.String(32), unique=True,
+                         index=True, nullable=False)  # username
     password_hash = db.Column(db.String(128))
     email = db.Column(db.String(128), index=True, default=None)  # Email
     phone = db.Column(db.String(32), index=True, default=None)
-    sex = db.Column(db.Integer(), default=0)
+    sex = db.Column(db.Enum(SexEnum), default=SexEnum.empty)
     active = db.Column(db.Boolean(), default=True)
     nickname = db.Column(db.String(32), default="")  # 昵称
     avatar_hash = db.Column(db.String(32))  # 头像hash值
-
-    create_datetime = db.Column(
-        db.DateTime, nullable=False, default=dt.datetime.now)  # 创建（注册）时间
 
     current_login_datetime = db.Column(db.DateTime, nullable=True)  # 本次登录时间
     last_login_datetime = db.Column(db.DateTime, nullable=True)  # 上次登录时间
     last_login_ip = db.Column(db.String(32), nullable=True)  # 上次登录IP
     current_login_ip = db.Column(db.String(32), nullable=True)  # 当前登录IP
+
+    create_datetime = db.Column(
+        db.DateTime, nullable=False, default=dt.datetime.now)  # 创建（注册）时间
 
     roles = db.relationship(
         'Role',
@@ -93,13 +101,17 @@ class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
         # from app import user_manager
         self.password_hash = user_manager.password_manager.hash_password(
             password)
+        # for werkzeug
+        # self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):
         """验证密码"""
         # from app import user_manager
-        ret = user_manager.password_manager.verify_password(
+        return user_manager.password_manager.verify_password(
             password, self.password)
-        return ret
+
+        # for werkzeug
+        # return check_password_hash(self.password_hash, password)
 
     def gravatar(self, size=100, default='identicon', rating='g'):
         """生成头像"""
@@ -112,7 +124,7 @@ class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
         return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
             url=url, hash=hash, size=size, default=default, rating=rating)
 
-    def login_info_update(self, auto_commit=True):
+    def login_info_update(self, commit=True):
         """登录信息更新"""
         # import datetime as dt
         # from flask import request
@@ -120,6 +132,6 @@ class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
         self.current_login_datetime = dt.datetime.now()
         self.last_login_ip = self.current_login_ip
         self.current_login_ip = request.remote_addr
-        if auto_commit:
-            db.session.add(self)
+        db.session.add(self)
+        if commit:
             db.session.commit()

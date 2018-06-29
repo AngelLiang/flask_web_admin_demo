@@ -61,11 +61,8 @@ def _createuser(roles):
 def createsuperuser():
     """创建超级管理员"""
 
-    admin = Role.get_or_create(name="admin")
-    developer = Role.get_or_create(name="developer")
-    default = Role.get_or_create(name="default")
-
-    ret = _createuser([admin, developer])
+    roles = Role.init_role()
+    ret = _createuser(list(roles))
     if ret:
         print("Superuser is created successfully!")
 
@@ -81,3 +78,17 @@ def initdb():
     db.create_all()
     print("The database is created successfully!")
     # createsuperuser()
+
+
+@app.cli.command()
+def dropdb():
+    ret = input("drop the database? [y/n] ")
+    if ret in ("y", "Y", "yes"):
+        db.drop_all()
+
+
+@app.cli.command()
+def test():
+    import unittest
+    tests = unittest.TestLoader().discover('tests')
+    unittest.TextTestRunner(verbosity=2).run(tests)

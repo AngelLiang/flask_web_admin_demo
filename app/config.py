@@ -24,7 +24,7 @@ class Config(object):
 
     # toobar
     DEBUG_TB_ENABLED = True
-    DEBUG_TB_INTERCEPT_REDIRECTS = False
+    DEBUG_TB_INTERCEPT_REDIRECTS = True
 
     @staticmethod
     def init_app(app):

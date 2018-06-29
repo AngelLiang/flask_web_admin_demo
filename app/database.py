@@ -1,7 +1,14 @@
 # coding=utf-8
+"""
+Flask 常用的 Model 抽象类
+"""
 
-from six import string_types
+import uuid
+from flask import current_app
+from .compat import string_types
+# from six import string_types
 
+from sqlalchemy import func, and_, or_
 from sqlalchemy.orm import backref, aliased
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
 
@@ -12,6 +19,10 @@ db = SQLAlchemy()
 
 Column = db.Column
 relationship = db.relationship
+
+
+def gen_uuid(prefix=""):
+    return prefix + str(uuid.uuid4())
 
 
 class CRUDMixin(object):
@@ -47,7 +58,7 @@ class CRUDMixin(object):
         以指定参数进行查询，如果查询到则返回该对象
         如果没有查询到，则创建一个对象并返回
 
-        example:
+        usage:
         ```
         cls.get_or_create(q={"username":"admin"}, password="admin")
         cls.get_or_create(username="admin")
@@ -94,6 +105,7 @@ class SurrogatePK(object):
     """A mixin that adds a surrogate integer 'primary key' column named ``id`` to any declarative-mapped class."""
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
+    # id = db.Column(db.String(128), primary_key=True, default=gen_uuid)
 
     @classmethod
     def get_by_id(cls, record_id):
@@ -102,6 +114,7 @@ class SurrogatePK(object):
                 isinstance(record_id, (int, float))), ):
             return cls.query.get(int(record_id))
         return None
+        # return cls.query.get(record_id)
 
 
 def reference_col(tablename, nullable=False, pk_name='id', **kwargs):
@@ -112,5 +125,28 @@ def reference_col(tablename, nullable=False, pk_name='id', **kwargs):
     """
     return db.Column(
         db.ForeignKey('{0}.{1}'.format(tablename, pk_name)),
-        nullable=nullable,
-        **kwargs)
+        nullable=nullable, **kwargs)
+
+
+# 慢查询日志
+
+class SQLConfig(object):
+    SQLALCHEMY_RECORD_QUERIES = True
+    # slow database query threshold (in seconds)
+    DATABASE_QUERY_TIMEOUT = 0.5
+
+
+def init_app(app):
+    from flask_sqlalchemy import get_debug_queries
+
+    app.config.from_object(SQLConfig)
+    timeout = SQLConfig.DATABASE_QUERY_TIMEOUT
+
+    # 慢查询日志初始化
+    @app.after_request
+    def after_request(response):
+        for query in get_debug_queries():
+            if query.duration >= timeout:
+                current_app.logger.warning("SLOW QUERY: %s\nParameters: %s\nDuration: %fs\nContext: %s\n" % (
+                    query.statement, query.parameters, query.duration, query.context))
+        return response

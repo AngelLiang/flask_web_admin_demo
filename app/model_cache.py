@@ -1,14 +1,5 @@
 # coding=utf-8
 
-# from werkzeug.contrib.cache import SimpleCache, RedisCache
-# try:
-#     cache = RedisCache()
-#     cache.get("connection")  # 连接测试
-# except Exception:
-#     cache = SimpleCache()
-# else:
-#     pass
-
 from . import cache
 
 

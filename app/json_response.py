@@ -1,30 +1,88 @@
 # coding=utf-8
+"""
+基于Flask的json response生成类
+"""
 
-import copy
 from flask import request
 
 
+class AbstractStatus(object):
+    """
+    状态抽象类
+    """
+    @classmethod
+    def to_dict(cls):
+        return dict(status=cls.status, message=cls.message)
+
+
+class StatusSuccess(AbstractStatus):
+    status = 1
+    message = "success!"
+
+
+class StatusFail(AbstractStatus):
+    status = 0
+    message = "fail!"
+
+
+class StatusParameterMissing(AbstractStatus):
+    status = -1
+    message = "parameter is missing!"
+
+
+class StatusParameterError(AbstractStatus):
+    status = -1
+    message = "parameter is error!"
+
+
 class JsonResponse(object):
+    """
+    usage:
 
-    success_dict = {"status": 1, "messge": "success!"}
+    ```
+    JsonResponse.make_success()
+    ```
 
-    fail_dict = {"status": 0, "messge": "fail!"}
+    """
 
-    miss_param = {"status": -1, "messge": "miss parameters!"}
+    @staticmethod
+    def add_data(d, data):
+        if data is None:
+            data = {}
+        d.update(dict(data=data))
 
-    def deepcopy_and_update(self, json_dict: dict, data):
-        temp = copy.deepcopy(json_dict)
-        temp.update({"request": request.base_url, "data": data or {}})
-        return temp
+    @staticmethod
+    def add_url(d):
+        d.update(dict(request=request.base_url))
 
-    def make_success(self, data=None) -> dict:
-        return self.deepcopy_and_update(self.success_dict, data)
+    @staticmethod
+    def add_url_and_data(d, data):
+        JsonResponse.add_url(d)
+        JsonResponse.add_data(d, data)
 
-    def make_fail(self, data=None) -> dict:
-        return self.deepcopy_and_update(self.fail_dict, data)
+    ##########################################################################
+    # make method
 
-    def make_miss_param(self, data=None) -> dict:
-        return self.deepcopy_and_update(self.miss_param, data)
+    @classmethod
+    def make_success(cls, data=None) -> dict:
+        d = StatusSuccess.to_dict()
+        cls.add_url_and_data(d, data)
+        return d
 
+    @classmethod
+    def make_fail(cls, data=None) -> dict:
+        d = StatusFail.to_dict()
+        cls.add_url_and_data(d, data)
+        return d
 
-singleton_json_response = JsonResponse()
+    @classmethod
+    def make_parameter_missing(cls, data=None) -> dict:
+        d = StatusParameterMissing.to_dict()
+        cls.add_url_and_data(d, data)
+        return d
+
+    @classmethod
+    def make_parameter_error(cls, data=None) -> dict:
+        d = StatusParameterError.to_dict()
+        cls.add_url_and_data(d, data)
+        return d

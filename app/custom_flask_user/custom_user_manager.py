@@ -6,18 +6,15 @@ how to use:
 本文件放在app/utils/文件夹下，然后在app/__init__.py初始化:
 
 ```
-try:
-    from .utils.custom_user_manager import CustomUserManager
-    user_manager = CustomUserManager()
-except Exception:
-    user_manager = UserManager()
+from .custom_flask_user.custom_user_manager import CustomUserManager
+user_manager = CustomUserManager()
 ```
 
 """
 
 from flask import current_app
 from flask_user import UserManager
-from .custom_login_form import CustomLoginForm
+# from .custom_login_form import CustomLoginForm
 
 
 class CustomUserManager(UserManager):
@@ -35,7 +32,7 @@ class CustomUserManager(UserManager):
 
         #######################################################################
         # 表单
-        self.LoginFormClass = CustomLoginForm
+        # self.LoginFormClass = CustomLoginForm
 
         #######################################################################
         # 客制化 flask-login 的 login_manager

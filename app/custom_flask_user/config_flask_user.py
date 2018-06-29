@@ -1,7 +1,5 @@
 # coding=utf-8
 
-__all__ = ("FlaskUserConfig", )
-
 
 class FlaskUserConfig(object):
     # Flask-Mail settings

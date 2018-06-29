@@ -69,7 +69,7 @@ class CustomBaseModelView(ModelView):
 
     # 页数
     # can_set_page_size = True
-    page_size = 20
+    # page_size = 20
 
     # modal
     # create_modal = True

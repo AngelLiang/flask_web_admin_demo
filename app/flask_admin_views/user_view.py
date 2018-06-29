@@ -12,10 +12,8 @@ from flask_admin.model.template import EndpointLinkRowAction, LinkRowAction
 from app.database import db, Column, reference_col, relationship
 
 # model
+from app.models.user_model import SexEnum
 from app.models import User, Role
-
-# blueprint
-from . import views
 
 # flask admin base mode view
 from .base_view import CustomBaseModelView
@@ -54,6 +52,15 @@ class UsersModelView(CustomBaseModelView):
         "last_login_datetime": u"上次登录时间",
         "current_login_ip": u"本次登录IP",
         "last_login_ip": u"上次登录IP",
+    }
+
+    column_choices = {
+        'sex': [
+            (SexEnum.male, u"男"),
+            (SexEnum.female, u"女"),
+            (SexEnum.other, u"其他"),
+            (SexEnum.empty, u"未填"),
+        ]
     }
 
     column_searchable_list = ('username', )
@@ -104,9 +111,9 @@ class RolesModelView(CustomBaseModelView):
     """
     Roles Model View
     """
-    can_create = False
-    can_delete = False
-    can_edit = False
+    can_create = True
+    can_delete = True
+    can_edit = True
     can_view_details = False
 
     column_labels = {"name": u"角色名称", "description": u"描述"}
