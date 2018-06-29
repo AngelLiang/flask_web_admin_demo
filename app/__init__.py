@@ -111,6 +111,10 @@ def create_app(config_name):
     # init_errors_page(app)
     amdin_index_view.init_errors_page(app)
 
+    # apis
+    from app.apis import api
+    app.register_blueprint(api, url_prefix="/api/v1_0")
+
     # 慢查询日志
     from app.database import init_app
     init_app(app)

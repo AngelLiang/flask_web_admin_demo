@@ -20,7 +20,7 @@ from app.database import (db, SurrogatePK, CRUDMixin,
 # cache
 from app.model_cache import ModelCacheMixin
 
-# from .utils import enum_value_cb
+from .utils import enum_value_cb
 
 # model
 
@@ -67,17 +67,17 @@ class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
     username = db.Column(db.String(32), unique=True,
                          index=True, nullable=False)  # username
     password_hash = db.Column(db.String(128))
-    email = db.Column(db.String(128), index=True, default=None)  # Email
-    phone = db.Column(db.String(32), index=True, default=None)
+    email = db.Column(db.String(128), index=True, default="")  # Email
+    phone = db.Column(db.String(32), index=True, default="")
     sex = db.Column(db.Enum(SexEnum), default=SexEnum.empty)
     active = db.Column(db.Boolean(), default=True)
     nickname = db.Column(db.String(32), default="")  # 昵称
     avatar_hash = db.Column(db.String(32))  # 头像hash值
 
-    current_login_datetime = db.Column(db.DateTime, nullable=True)  # 本次登录时间
-    last_login_datetime = db.Column(db.DateTime, nullable=True)  # 上次登录时间
-    last_login_ip = db.Column(db.String(32), nullable=True)  # 上次登录IP
-    current_login_ip = db.Column(db.String(32), nullable=True)  # 当前登录IP
+    current_login_datetime = db.Column(db.DateTime, default=None)  # 本次登录时间
+    last_login_datetime = db.Column(db.DateTime, default=None)  # 上次登录时间
+    last_login_ip = db.Column(db.String(32), default="")  # 上次登录IP
+    current_login_ip = db.Column(db.String(32), default="")  # 当前登录IP
 
     create_datetime = db.Column(
         db.DateTime, nullable=False, default=dt.datetime.now)  # 创建（注册）时间
@@ -96,19 +96,28 @@ class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
 
     @password.setter
     def password(self, password):
-        """设置密码hash"""
+        """设置密码hash
+        使用了 flask-user 则不能进行加密， 因为 flask-user 设置密码之前已经加密了
+        """
         # for flask-user
         # from app import user_manager
-        self.password_hash = user_manager.password_manager.hash_password(
-            password)
+        # self.password_hash = user_manager.password_manager.hash_password(password)
+        self.password_hash = password
+
         # for werkzeug
         # self.password_hash = generate_password_hash(password)
+
+    def gen_password(self, password):
+        """
+        为非注册的用户生成密码
+        """
+        self.password_hash = user_manager.password_manager.hash_password(
+            password)
 
     def verify_password(self, password):
         """验证密码"""
         # from app import user_manager
-        return user_manager.password_manager.verify_password(
-            password, self.password)
+        return user_manager.password_manager.verify_password(password, self.password_hash)
 
         # for werkzeug
         # return check_password_hash(self.password_hash, password)
@@ -135,3 +144,18 @@ class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
         db.session.add(self)
         if commit:
             db.session.commit()
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "password_hash": self.password_hash,
+            "email": self.email,
+            "phone": self.phone,
+            "sex": repr(self.sex),
+            "active": self.active,
+            "nickname": self.nickname,
+            "create_datetime": self.create_datetime,
+            "avatar": self.gravatar(),
+            "roles": [role.name for role in self.roles]
+        }

@@ -85,7 +85,7 @@ class CustomUserManager(UserManager):
         @user_logged_in.connect_via(app)
         def _track_logins(sender, user, **extra):
             # TODO:
-            current_app.logger.debug("{} login".format(user.username))
+            current_app.logger.debug("{!r} login".format(user))
             user.login_info_update()
 
         #######################################################################

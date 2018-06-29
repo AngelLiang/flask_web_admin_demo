@@ -53,7 +53,8 @@ def _createuser(roles):
         return
 
     user = User.create(
-        username=username, password=password, roles=roles, active=True)
+        username=username, roles=roles, active=True)
+    user.gen_password(password)
     return user
 
 

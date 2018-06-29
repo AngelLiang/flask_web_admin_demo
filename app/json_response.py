@@ -70,9 +70,11 @@ class JsonResponse(object):
         return d
 
     @classmethod
-    def make_fail(cls, data=None) -> dict:
+    def make_fail(cls, message=None, data=None) -> dict:
         d = StatusFail.to_dict()
         cls.add_url_and_data(d, data)
+        if message:
+            d.update({"message": message})
         return d
 
     @classmethod
