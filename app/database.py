@@ -4,7 +4,7 @@ Flask 常用的 Model 抽象类
 """
 
 import uuid
-from flask import current_app
+from flask import g, current_app
 from app.utils.compat import string_types
 # from six import string_types
 
@@ -16,6 +16,7 @@ from sqlalchemy.ext.declarative import as_declarative, declared_attr
 # from . import db
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
+
 
 Column = db.Column
 relationship = db.relationship
@@ -128,7 +129,32 @@ def reference_col(tablename, nullable=False, pk_name='id', **kwargs):
         nullable=nullable, **kwargs)
 
 
+##########################################################################
+# 获取db链接，以下接口暂时用不到
+# from: http://flask.pocoo.org/docs/1.0/tutorial/database/
+
+def get_db():
+    if 'db' not in g:
+        # g.db = sqlite3.connect(
+        #     current_app.config['DATABASE'],
+        #     detect_types=sqlite3.PARSE_DECLTYPES
+        # )
+        # g.db.row_factory = sqlite3.Row
+
+        g.db = db
+
+    return g.db
+
+
+def close_db(e=None):
+    db = g.pop('db', None)
+
+    if db is not None:
+        db.close()
+
+##########################################################################
 # 慢查询日志
+
 
 class SQLConfig(object):
     SQLALCHEMY_RECORD_QUERIES = True
