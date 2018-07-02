@@ -22,7 +22,14 @@ app = create_app(os.getenv('FLASK_ENV') or 'default')
 
 
 def main():
-    app.run()
+    # app.run()
+
+    # 性能分析
+    # `python wsgi.py`
+    from werkzeug.contrib.profiler import ProfilerMiddleware
+    app.config['PROFILE'] = True
+    app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
+    app.run(debug=True)
 
 if __name__ == '__main__':
     main()
