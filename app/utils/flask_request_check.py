@@ -43,7 +43,7 @@ class FlaskRequestCheck(object):
 
         def _func(func):
             if not cls.args_check(args):
-                return jsonify(JsonResponse.make_parameter_missing())
+                return jsonify(JsonResponse.make_parameter_miss())
 
             @wraps(func)
             def wrapper(*args, **kw):

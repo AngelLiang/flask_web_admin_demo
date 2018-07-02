@@ -10,9 +10,21 @@ class AbstractStatus(object):
     """
     状态抽象类
     """
-    @classmethod
-    def to_dict(cls):
-        return dict(status=cls.status, message=cls.message)
+    status = 0
+    message = "message"
+    data = {}
+
+    def __init__(self, message=None, data=None):
+        if message:
+            self.message = message
+        if data:
+            self.data = data
+
+    def to_dict(self, add_url=True):
+        d = dict(status=self.status, message=self.message, data=self.data)
+        if add_url:
+            d["request"] = request.base_url
+        return d
 
 
 class StatusSuccess(AbstractStatus):
@@ -25,7 +37,7 @@ class StatusFail(AbstractStatus):
     message = "fail!"
 
 
-class StatusParameterMissing(AbstractStatus):
+class StatusParameterMiss(AbstractStatus):
     status = -1
     message = "parameter is missing!"
 
@@ -45,46 +57,25 @@ class JsonResponse(object):
 
     """
 
-    @staticmethod
-    def add_data(d, data):
-        if data is None:
-            data = {}
-        d.update(dict(data=data))
-
-    @staticmethod
-    def add_url(d):
-        d.update(dict(request=request.base_url))
-
-    @staticmethod
-    def add_url_and_data(d, data):
-        JsonResponse.add_url(d)
-        JsonResponse.add_data(d, data)
-
     ##########################################################################
     # make method
 
     @classmethod
     def make_success(cls, data=None) -> dict:
-        d = StatusSuccess.to_dict()
-        cls.add_url_and_data(d, data)
+        d = StatusSuccess(data=data).to_dict()
         return d
 
     @classmethod
     def make_fail(cls, message=None, data=None) -> dict:
-        d = StatusFail.to_dict()
-        cls.add_url_and_data(d, data)
-        if message:
-            d.update({"message": message})
+        d = StatusFail(message=message, data=data).to_dict()
         return d
 
     @classmethod
-    def make_parameter_missing(cls, data=None) -> dict:
-        d = StatusParameterMissing.to_dict()
-        cls.add_url_and_data(d, data)
+    def make_parameter_miss(cls, data=None) -> dict:
+        d = StatusParameterMiss(data=data).to_dict()
         return d
 
     @classmethod
     def make_parameter_error(cls, data=None) -> dict:
-        d = StatusParameterError.to_dict()
-        cls.add_url_and_data(d, data)
+        d = StatusParameterError(data=data).to_dict()
         return d

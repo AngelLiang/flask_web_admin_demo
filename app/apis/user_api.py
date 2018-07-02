@@ -26,7 +26,7 @@ class UserAPIObj(object):
 
         ret = s_check.check_values("username", "password")
         if not ret:
-            return(jsonify(s_json.make_parameter_missing()))
+            return(jsonify(s_json.make_parameter_miss()))
 
         user = User.query.filter_by(username=values.get("username")).first()
         if user:
@@ -43,7 +43,7 @@ class UserAPIObj(object):
     def verify_token(self):
         ret = s_check.check_values("token")
         if not ret:
-            return(jsonify(s_json.make_parameter_missing()))
+            return(jsonify(s_json.make_parameter_miss()))
         token = request.values.get("token")
         try:
             data = User.verify_token(token)
