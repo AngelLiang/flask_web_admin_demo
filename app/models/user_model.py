@@ -151,7 +151,8 @@ class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
         self.last_login_datetime = self.current_login_datetime
         self.current_login_datetime = dt.datetime.now()
         self.last_login_ip = self.current_login_ip
-        self.current_login_ip = request.remote_addr
+        if request:
+            self.current_login_ip = request.remote_addr
         db.session.add(self)
         if commit:
             db.session.commit()

@@ -35,10 +35,19 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(app_dir, 'data-dev.sqlite')
+
+    # If set to True,
+    # Flask-SQLAlchemy will track modifications of objects and emit signals.
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+    # If set to True
+    # SQLAlchemy will log all the statements issued to stderr
+    # which can be useful for debugging.
+    SQLALCHEMY_ECHO = True
 
     # jinja2模板自动加载
     TEMPLATES_AUTO_RELOAD = True
+
     # jinja2模板渲染跟踪
     EXPLAIN_TEMPLATE_LOADING = False
 
