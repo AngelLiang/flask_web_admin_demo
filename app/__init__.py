@@ -82,8 +82,8 @@ def create_app(config_name):
     db.app = app
 
     # cache
-    from app.cache import CacheConfig, cache
-    app.config.from_object(CacheConfig)
+    from app.cache import CachingConfig, cache
+    app.config.from_object(CachingConfig)
     cache.init_app(app)
 
     # 国际化

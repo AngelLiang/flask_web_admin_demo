@@ -43,7 +43,7 @@ class DevelopmentConfig(Config):
     # If set to True
     # SQLAlchemy will log all the statements issued to stderr
     # which can be useful for debugging.
-    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_ECHO = False
 
     # jinja2模板自动加载
     TEMPLATES_AUTO_RELOAD = True

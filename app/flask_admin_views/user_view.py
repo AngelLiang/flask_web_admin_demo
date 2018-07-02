@@ -18,6 +18,9 @@ from app.models import User, Role
 # flask admin base mode view
 from .base_view import CustomBaseModelView
 
+# cache
+from app.cache import cache
+
 ##########################################################################
 # amdin model view
 
@@ -91,11 +94,13 @@ class UsersModelView(CustomBaseModelView):
         },
     }
 
-    # def get_query(self):
-    #     return super(UsersModelView, self).get_query()
+    # @cache.cached(60, key_prefix='user_admin_view_get_query')
+    def get_query(self):
+        return super(UsersModelView, self).get_query()
 
-    # def get_count_query(self):
-    #     return super(UsersModelView, self).get_count_query()
+    # @cache.cached(60)
+    def get_count_query(self):
+        return super(UsersModelView, self).get_count_query()
 
     # def get_one(self, id):
     #     prefix = "user"

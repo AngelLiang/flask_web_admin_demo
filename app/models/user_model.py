@@ -206,3 +206,4 @@ class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
 
     def gen_apikey(self):
         self.api_key = gen_salt(128)
+        return self.api_key

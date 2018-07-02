@@ -37,7 +37,7 @@ Flask-Admin = "==1.5.1"
 Flask-SQLAlchemy = "==2.3.2"
 redis = "==2.10.6"
 celery = "==3.1.25"
-flask-cache = "*"
+flask-caching = "*"
 
 [requires]
 python_version = "3.5"
