@@ -77,9 +77,14 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
-    # 数据库
+    # database
     db.init_app(app)
     db.app = app
+
+    # cache
+    from app.cache import CacheConfig, cache
+    app.config.from_object(CacheConfig)
+    cache.init_app(app)
 
     # 国际化
     babel.init_app(app)

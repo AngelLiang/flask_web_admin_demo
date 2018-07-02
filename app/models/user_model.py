@@ -99,7 +99,7 @@ class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
         backref=db.backref('users', lazy='dynamic'))
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<%s %r>'.format(self.__class__.__name__, self.username)
 
     @property
     def password(self):
