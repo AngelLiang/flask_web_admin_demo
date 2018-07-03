@@ -1,8 +1,11 @@
 #
 # docker build -t flask_demo .
+# docker run -p 5000:5000 -ti flask_demo 
 # docker inspect <CONTAINER ID> | grep IPAddress
 
 FROM centos:7
+
+WORKDIR /opt
 
 RUN yum -y groupinstall "Development tools"
 RUN yum -y install gcc gcc-c++ gdb wget
@@ -10,7 +13,6 @@ RUN yum -y install zlib zlib-devel bzip2-devel openssl-devel openssl-static ncur
 
 ###############################################################################
 ### download python 3.5.4
-RUN cd /opt
 RUN wget https://www.python.org/ftp/python/3.5.4/Python-3.5.4.tgz
 RUN tar xf Python-3.5.4.tgz
 # build 
@@ -30,7 +32,6 @@ RUN echo /usr/local/lib >> /etc/ld.so.conf.d/local.conf && ldconfig
 
 # 准备工作
 RUN yum install -y zlib-devel zip unzip
-RUN cd /opt
 # download
 RUN wget https://pypi.python.org/packages/0f/22/7fdcc777ba60e2a8b1ea17f679c2652ffe80bd5a2f35d61c629cb9545d5e/setuptools-36.7.2.zip#md5=1874983171af0f7b16b5ec48558e6e55
 RUN unzip setuptools-36.7.2.zip
@@ -41,7 +42,6 @@ RUN cd setuptools-36.7.2    \
 
 ###############################################################################
 # install pip3
-RUN cd /opt
 # download
 RUN wget https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/pip-9.0.1.tar.gz#md5=35f01da33009719497f01a4ba69d63c9
 RUN tar vxf pip-9.0.1.tar.gz
@@ -61,6 +61,8 @@ RUN pip3 install -U setuptools
 
 ###############################################################################
 # install requirements
+RUN mkdir /app
+WORKDIR /app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -71,6 +73,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # RUN pipenv shell
 
 COPY . .
+# COPY app ./
+# COPY wsgi.py ./
 
 # 环境变量
 ENV FLASK_ENV=prodection
@@ -79,7 +83,7 @@ ENV FLASK_ENV=prodection
 EXPOSE 5000
 
 # RUN flask initdb
-RUN export LC_ALL=en_US.utf8 && export LANG=en_US.utf8 && flask run -h 0.0.0.0 -p 5000
+# RUN export LC_ALL=en_US.utf8 && export LANG=en_US.utf8 && flask run -h 0.0.0.0 -p 5000
 # RUN flask run -h 0.0.0.0 -p 5000
 # ENTRYPOINT ["./gunicorn_bootshrap.sh"]
 
