@@ -26,6 +26,14 @@ flask createsuperuser
 flask run
 ```
 
+## gunicorn启动
+
+```bash
+gunicorn wsgi:app -c deploy/gunicorn_config.py
+# OR
+./gunicorn_bootstrap.sh
+```
+
 ## 效果图
 
 ![login](screenshot/login.png)
