@@ -43,7 +43,7 @@ workers = 1
 # workers = multiprocessing.cpu_count() * 2 + 1
 
 # 'gevent' or 'sync', default sync
-worker_class = 'gevent'
+worker_class = 'sync'
 # worker_class = "geventwebsocket.gunicorn.workers.GeventWebSocketWorker"
 
 # The maximum number of simultaneous clients.
