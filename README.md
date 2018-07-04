@@ -10,20 +10,25 @@ flask web 后台模板
 
 ## 快速开始
 
-Windows PowerShell pipenv+pip：
+Windows PowerShell pip：
 
 ```PowerShell
-# option
-$env:PIPENV_VENV_IN_PROJECT = "."
-pipenv install
-
-pipenv shell
-# or
-.\.venv\Scripts\activate
+python3 -m venv venv
+.\venv\Scripts\activate
+python3 -m pip install -U pip
+pip3 install -U setuptools
+pip3 install -r .\requirements.txt
 
 flask initdb
 flask createsuperuser
 flask run
+```
+
+## Docker
+
+```bash
+docker build -t flask_app .
+docker run -p 5000:5000 -ti flask_app 
 ```
 
 ## gunicorn启动
