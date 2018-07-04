@@ -1,16 +1,24 @@
+###############################################################################
 #
-# docker build -t flask_demo .
-# docker run -p 5000:5000 -ti flask_demo 
-# docker inspect <CONTAINER ID> | grep IPAddress
+# usage:
+# > docker build -t flask_app .
+# > docker run -p 5000:5000 -ti flask_app 
+# > docker inspect <CONTAINER ID> | grep IPAddress
+###############################################################################
 
 FROM centos:7
 
+###############################################################################
+# config
+
 # 设置环境变量
 ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.utf8
 
 # 时区
 RUN ln -s -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
+# 设置工作目录
 WORKDIR /opt
 
 # install python36
@@ -22,24 +30,27 @@ RUN ln -s /usr/bin/python36 /usr/bin/python3
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN python3 get-pip.py
 
-# 升级pip
+# upgrade pip
 RUN pip3 install -U pip
-# 升级setuptools
+# upgrade setuptools
 RUN pip3 install -U setuptools
 
-# test
+# pip test
 # CMD ["pip3", "-V"]
 
-# 清理
+# clean
 RUN yum clean all
 RUN rm -rf /tmp/* /var/tmp/*
 
 ###############################################################################
-# install requirements
-RUN mkdir /app
-WORKDIR /app
+
+RUN mkdir /var/flask_app
+WORKDIR /var/flask_app
+
+# install python requirements
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+
 
 # RUN pip3 install pipenv
 # COPY Pipfile ./
@@ -47,12 +58,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # RUN pipenv install
 # RUN pipenv shell
 
+###############################################################################
+# copy project
+
 COPY . .
 # COPY app ./
 # COPY wsgi.py ./
 
 # 环境变量
-ENV FLASK_ENV=prodection
+# ENV FLASK_ENV=prodection
 
 # Port to expose
 EXPOSE 5000
