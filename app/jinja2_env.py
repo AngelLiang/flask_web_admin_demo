@@ -15,7 +15,7 @@ from app.cache import cache
 
 
 def get_count(model) -> int:
-    return db.session.query(func.count(model.id)).first()[0]
+    return db.session.query(func.count('*')).select_from(model).scalar()
 
 
 @cache.memoize(timeout=60)
