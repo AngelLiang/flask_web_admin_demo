@@ -14,14 +14,22 @@ Windows PowerShell pip：
 
 ```PowerShell
 python3 -m venv venv
-.\venv\Scripts\activate
-python3 -m pip install -U pip
-pip3 install -U setuptools
-pip3 install -r .\requirements.txt
+.\venv\Scripts\Activate.ps1
 
-flask initdb
-flask createsuperuser
-flask run
+# 升级pip和setuptools
+(venv) python3 -m pip install --upgrade pip
+(venv) pip3 install -U setuptools
+
+# 安装依赖包
+(venv) pip3 install -r .\requirements.txt
+# 从阿里云镜像下载
+(venv) pip3 install -r .\requirements.txt -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+# 从豆瓣镜像下载
+(venv) pip3 install -r .\requirements.txt -i http://mirrors.douban.com/pypi/simple/ --trusted-host mirrors.douban.com
+
+(venv) flask initdb
+(venv) flask createsuperuser
+(venv) flask run
 ```
 
 ## Docker

@@ -43,6 +43,7 @@ from app import db
 from app.models import User, Role
 
 
+
 def _createuser(roles):
     username = input("Please Enter the superuser username:")
     if not username:
@@ -77,12 +78,8 @@ def createsuperuser():
 
 @app.cli.command()
 def initdb():
-    """数据库初始化"""
+    """数据库创建表"""
 
-    ret = input("drop the database? [y/n] ")
-    if ret in ("y", "Y", "yes"):
-        db.drop_all()
-        print("drop database finish!")
     db.create_all()
     print("The database is created successfully!")
     # createsuperuser()
@@ -90,6 +87,8 @@ def initdb():
 
 @app.cli.command()
 def dropdb():
+    """清空数据库"""
+
     ret = input("drop the database? [y/n] ")
     if ret in ("y", "Y", "yes"):
         db.drop_all()

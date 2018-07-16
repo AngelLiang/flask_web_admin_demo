@@ -27,6 +27,7 @@ venv*
 migrations/
 
 ### env
-.env
+# .env
 
-
+### config
+conf.py

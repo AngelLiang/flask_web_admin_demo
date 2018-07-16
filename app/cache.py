@@ -6,6 +6,8 @@
 # from flask_cache import Cache
 
 # docs: https://pythonhosted.org/Flask-Caching/
+
+import os
 from flask_caching import Cache
 
 
@@ -20,4 +22,8 @@ class CachingConfig(object):
     # saslmemcached: SASLMemcachedCache (pylibmc required)
     CACHE_TYPE = "simple"
 
+
 cache = Cache()
+
+if os.getenv("REDIS_ENABLE"):
+    pass
