@@ -31,7 +31,7 @@ class FlaskClientTestCase(unittest.TestCase):
         self.assertTrue(u"登录" in response.get_data(as_text=True))
 
     def test_register_and_login(self):
-        """测试注册和登陆"""
+        """测试注册和登录"""
         username = "test_account"
         password = "Test123"    # 密码须包含至少6个字符，其中至少1个小写字母，1个大写字母和1个数字
 

@@ -24,7 +24,7 @@ class APITestCase(unittest.TestCase):
 
     # @unittest.skip("don't test!")
     def test_api_register_and_login(self):
-        """测试API登陆"""
+        """测试API登录"""
         username = "api_test"
         password = "Test123"    # 密码须包含至少6个字符，其中至少1个小写字母，1个大写字母和1个数字
 
