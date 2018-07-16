@@ -30,10 +30,9 @@ RUN ln -s /usr/bin/python36 /usr/bin/python3
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN python3 get-pip.py
 
-# upgrade pip
-RUN pip3 install -U pip
-# upgrade setuptools
-RUN pip3 install -U setuptools
+# upgrade pip & setuptool
+RUN python3 -m ensurepip --upgrade
+
 
 # pip test
 # CMD ["pip3", "-V"]
