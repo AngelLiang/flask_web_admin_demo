@@ -3,7 +3,7 @@
 
 .flaskenv:
 
-FLASK_APP=wsgi.py
+FLASK_APP=main.py
 FLASK_ENV=development
 
 """
@@ -15,25 +15,25 @@ from app import create_app
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 
 # 使用 os.getenv('FLASK_ENV') 必须调用
-# 当使用`python wsgi.py`启动时需要手动加载环境
+# 当使用`python main.py`启动时需要手动加载环境
 load_dotenv()   # 显式加载 .flaskenv 和 .env
 
 app = create_app(os.getenv('FLASK_ENV') or 'default')
 
 
-def main():
+def run_profiler():
     # app.run()
 
     # 性能分析
-    # `python wsgi.py`
     from werkzeug.contrib.profiler import ProfilerMiddleware
     app.config['PROFILE'] = True
     app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
     app.run(debug=True)
 
+
 if __name__ == '__main__':
     # main()
-    app.run()
+    app.run(host=app.config.get("HOST"), port=app.config.get("PORT"))
 
 ###############################################################################
 
@@ -42,7 +42,6 @@ import getpass
 from flask import current_app
 from app import db
 from app.models import User, Role
-
 
 
 def _createuser(roles):
@@ -79,17 +78,14 @@ def createsuperuser():
 
 @app.cli.command()
 def initdb():
-    """数据库创建表"""
-
+    """数据库初始化"""
     db.create_all()
     print("The database is created successfully!")
-    # createsuperuser()
 
 
 @app.cli.command()
 def dropdb():
     """清空数据库"""
-
     ret = input("drop the database? [y/n] ")
     if ret in ("y", "Y", "yes"):
         db.drop_all()
@@ -97,6 +93,7 @@ def dropdb():
 
 @app.cli.command()
 def test():
+    """测试用例"""
     import unittest
     tests = unittest.TestLoader().discover('tests')
     unittest.TextTestRunner(verbosity=2).run(tests)

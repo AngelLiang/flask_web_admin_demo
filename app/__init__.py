@@ -39,7 +39,7 @@ from .cache import cache
 ###############################################################################
 # flask-user
 
-from .custom_flask_user import CustomUserManager
+from .flask_user_custom import CustomUserManager
 user_manager = CustomUserManager()
 
 ###############################################################################
@@ -97,7 +97,7 @@ def create_app(config_name):
 
     # flask-user
     from app.models import User
-    from app.custom_flask_user import FlaskUserConfig
+    from app.flask_user_custom import FlaskUserConfig
     app.config.from_object(FlaskUserConfig)  # 添加 FlaskUserConfig 配置
     app.config["USER_APP_NAME"] = app.config.get("APP_NAME")
     user_manager.init_app(app, db, User)

@@ -33,7 +33,9 @@ python3 -m venv venv
 
 (venv) flask initdb
 (venv) flask createsuperuser
-(venv) flask run
+
+# 启动服务
+(venv) python3 main.py
 ```
 
 ## Docker
@@ -46,7 +48,7 @@ docker run -p 5000:5000 -ti flask_app
 ## gunicorn启动
 
 ```bash
-gunicorn wsgi:app -c deploy/gunicorn_config.py
+gunicorn main:app -c deploy/gunicorn_config.py
 # OR
 ./gunicorn_bootstrap.sh
 ```

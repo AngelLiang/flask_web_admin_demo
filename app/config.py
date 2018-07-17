@@ -29,9 +29,7 @@ class Config(object):
 
     @staticmethod
     def init_app(app):
-        # 加载配置文件
-        conf_path = os.path.join(app_dir, "conf.py")
-        app.config.from_pyfile(conf_path, silent=True)
+        pass
 
 
 class DevelopmentConfig(Config):
@@ -69,6 +67,12 @@ class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL') or \
         'sqlite:///' + os.path.join(app_dir, 'data.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+    @staticmethod
+    def init_app(app):
+        # 加载配置文件
+        conf_path = os.path.join(app_dir, "conf.py")
+        app.config.from_pyfile(conf_path, silent=True)
 
 
 config = {
