@@ -17,6 +17,10 @@ curr_dir = os.path.dirname(os.path.realpath(__file__))
 # db = SQLAlchemy()
 from .database import db
 
+# 数据库迁移管理
+from flask_migrate import Migrate
+migrate = Migrate()
+
 ###############################################################################
 # 国际化
 
@@ -77,11 +81,11 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
-
-
     # database
     db.init_app(app)
     db.app = app
+
+    migrate.init_app(app, db)
 
     # cache
     from app.cache import CachingConfig, cache
