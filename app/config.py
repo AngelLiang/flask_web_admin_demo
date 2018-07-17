@@ -10,6 +10,7 @@ app_dir = last_dir
 
 class Config(object):
     APP_NAME = "基于Flask+Bootstrap后台演示"
+
     # SECRET_KEY
     SECRET_KEY = os.getenv('SECRET_KEY') or \
         'hard to guess string and longer than 32 byte!'

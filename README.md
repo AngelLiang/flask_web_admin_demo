@@ -47,6 +47,10 @@ gunicorn wsgi:app -c deploy/gunicorn_config.py
 ./gunicorn_bootstrap.sh
 ```
 
+## 注意事项
+
+- `.env`文件内不能有非ascii编码的字符，也就是不能有中文字符。
+
 ## 效果图
 
 ![login](screenshot/login.png)
