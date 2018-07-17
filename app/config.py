@@ -33,6 +33,7 @@ class Config(object):
         conf_path = os.path.join(app_dir, "conf.py")
         app.config.from_pyfile(conf_path, silent=True)
 
+
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv('DEV_DATABASE_URL') or \
