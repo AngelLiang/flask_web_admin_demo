@@ -36,6 +36,10 @@ python3 -m venv venv
 
 # 启动服务
 (venv) python3 main.py
+
+# 部署
+(venv) cp deploy/gunicorn_config.py gunicorn_config.py
+(venv) gunicorn wsgi:app -c gunicorn_config.py
 ```
 
 ## Docker

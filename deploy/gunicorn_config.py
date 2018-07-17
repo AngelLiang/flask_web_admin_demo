@@ -2,9 +2,9 @@
 """
 filename: gunicorn_config.py
 
-how to use:
-install: pip install gunicorn
-sample: gunicorn wsgi:app -c gunicorn_config.py
+usage:
+    install: pip install gunicorn
+    start: gunicorn wsgi:app -c gunicorn_config.py
 """
 
 import sys
@@ -21,6 +21,8 @@ app_dir = last_dir
 _file_name = os.path.basename(__file__)
 
 # sys.path.insert(0, app_dir)
+###############################################################################
+
 
 # === Server Socket ===
 bind = "0.0.0.0:5000"  # default: "127.0.0.1:8000"
@@ -53,7 +55,7 @@ worker_connections = 1000
 timeout = 30
 
 # The maximum number of requests a worker will process before restarting.
-max_requests = 2000
+max_requests = 2048
 
 # Timeout for graceful workers restart.
 graceful_timeout = 30
