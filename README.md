@@ -57,6 +57,23 @@ gunicorn main:app -c deploy/gunicorn_config.py
 ./gunicorn_bootstrap.sh
 ```
 
+## 数据库的迁移
+
+## 初始化
+
+```
+flask db init
+flask db migrate
+```
+
+之后会在本目录下生成`migrations`文件夹
+
+### 导出SQL脚本
+
+```bash
+flask db upgrade --sql > dbinit.sql
+```
+
 ## 注意事项
 
 - `.env`文件内不能有非ascii编码的字符，也就是不能有中文字符。

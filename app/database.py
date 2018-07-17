@@ -12,6 +12,7 @@ from sqlalchemy import func, and_, or_
 from sqlalchemy.orm import backref, aliased
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
 
+
 # Alias common SQLAlchemy names
 # from . import db
 from flask_sqlalchemy import SQLAlchemy
