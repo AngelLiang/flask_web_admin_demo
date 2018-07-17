@@ -55,7 +55,8 @@ WORKDIR /var/flask_app
 
 # install python requirements
 COPY requirements.txt ./
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt \
+    -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
 
 
 # RUN pip3 install pipenv
