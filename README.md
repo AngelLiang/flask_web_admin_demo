@@ -27,6 +27,10 @@ python3 -m venv venv
 # 从豆瓣镜像下载
 (venv) pip3 install -r .\requirements.txt -i http://mirrors.douban.com/pypi/simple/ --trusted-host mirrors.douban.com
 
+# 拷贝并编辑配置文件
+(venv) cp conf_example.py conf.py
+(venv) vim conf.py
+
 (venv) flask initdb
 (venv) flask createsuperuser
 (venv) flask run

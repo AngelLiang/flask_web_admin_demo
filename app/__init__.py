@@ -77,10 +77,7 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
-    # 加载配置文件
-    # from .config import app_dir
-    # conf_path = os.path.join(app_dir, "conf.py")
-    # app.config.from_pyfile(conf_path, silent=True)
+
 
     # database
     db.init_app(app)
