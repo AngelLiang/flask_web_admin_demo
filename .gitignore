@@ -31,3 +31,6 @@ migrations/
 
 ### config
 conf.py
+
+### pytest
+.pytest_cache

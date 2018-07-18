@@ -48,6 +48,7 @@ sqlalchemy = "==1.2.8"
 vine = "==1.1.4"
 werkzeug = "==0.14.1"
 wtforms = "==2.1"
+pytest = "*"
 
 [dev-packages]
 
