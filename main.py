@@ -33,7 +33,9 @@ def run_profiler():
 
 if __name__ == '__main__':
     # main()
-    app.run(host=app.config.get("HOST"), port=app.config.get("PORT"))
+    host = os.getenv("HOST") or app.config.get("HOST") or "127.0.0.1"
+    port = os.getenv("PORT") or app.config.get("PORT") or 5000
+    app.run(host=host, port=port)
 
 ###############################################################################
 
