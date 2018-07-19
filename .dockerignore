@@ -1,6 +1,11 @@
 .git
 .vscode
-venv
 screenshot
 
+__pycache__
+
+venv
+.venv
+
 *.sqlite
+.pytest_chace

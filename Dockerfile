@@ -3,40 +3,41 @@
 # usage:
 # > docker build -t flask_app .
 # > docker run -p 5000:5000 -ti flask_app 
+# > docker run -it -v .:/var/app centos /bin/bash
 # > docker inspect <CONTAINER ID> | grep IPAddress
 ###############################################################################
-# OS
+### OS
 FROM centos:7
 
 ###############################################################################
 # config
 
-# 设置环境变量
+### 设置环境变量
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.utf8
 
-# 时区
+### 时区
 RUN ln -s -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-# 设置工作目录
+### 设置工作目录
 WORKDIR /opt
 RUN yum install -y epel-release
-RUN yum install -y wget net-tools curl
+RUN yum install -y wget net-tools
 
 ###############################################################################
-# install python36
+### install python36
 RUN yum install -y python36
 RUN ln -s /usr/bin/python36 /usr/bin/python3
 
-# install pip
+### install pip
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 RUN python3 get-pip.py
 
-# upgrade pip & setuptools
+### upgrade pip & setuptools
 RUN python3 -m pip install -U pip && pip3 install -U setuptools
 
 ###############################################################################
-# mysql
+### mysql
 
 # RUN wget -i -c http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm
 # RUN yum -y install mysql57-community-release-el7-10.noarch.rpm
@@ -44,7 +45,7 @@ RUN python3 -m pip install -U pip && pip3 install -U setuptools
 # RUN systemctl start mysqld.service
 
 ###############################################################################
-# clean
+### clean
 RUN yum clean all
 RUN rm -rf /tmp/* /var/tmp/*
 
@@ -53,19 +54,21 @@ RUN rm -rf /tmp/* /var/tmp/*
 RUN mkdir /var/flask_app
 WORKDIR /var/flask_app
 
-# install python requirements
+### install python requirements  by pip
+
 COPY requirements.txt ./
+# RUN pip3 install --no-cache-dir -r requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt \
     -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
 
-
+### install python requirements by pipenv
 # RUN pip3 install pipenv
 # COPY Pipfile ./
 # COPY Pipfile.lock ./
 # RUN pipenv install
 
 ###############################################################################
-# copy project
+### copy project
 
 COPY . .
 # COPY .env ./
@@ -74,10 +77,10 @@ COPY . .
 # COPY tests ./
 # COPY deploy ./
 
-# 环境变量
+### 环境变量
 # ENV FLASK_ENV=prodection
 
-# Port to expose
+### Port to expose
 EXPOSE 5000
 
 # RUN flask initdb

@@ -73,8 +73,8 @@ loglevel = 'info'
 # The Error log file to write to.
 # Using '-' for FILE makes gunicorn log to stderr.
 # Changed in version 19.2: Log to stderr by default.
-# errorlog = '-'
-errorlog = "/dev/null"
+errorlog = '-'
+# errorlog = "/dev/null"
 # accesslog = os.path.join(curr_dir, "err.err")
 
 # Redirect stdout/stderr to Error log.
