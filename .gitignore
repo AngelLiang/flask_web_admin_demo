@@ -15,6 +15,7 @@
 *.egg-info
 build/
 __pycache__/
+dist/
 
 ### pyvenv
 venv*

@@ -1,0 +1,9 @@
+include main.py
+include wsgi.py
+include conf_example.py
+include dockerfile
+include .dockerignore
+
+graft app/static
+graft app/templates
+global-exclude *.pyc
