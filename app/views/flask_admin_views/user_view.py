@@ -12,7 +12,7 @@ from flask_admin.model.template import EndpointLinkRowAction, LinkRowAction
 from app.database import db, Column, reference_col, relationship
 
 # model
-from app.models.user_model import SexEnum
+from app.models.user import SexEnum
 from app.models import User, Role
 
 # flask admin base mode view

@@ -50,8 +50,8 @@ user_manager = CustomUserManager()
 # flask admin
 
 from flask_admin import Admin
-from app.flask_admin_views import init_admin_views
-from app.flask_admin_views.base_view import CustomAdminIndexView
+from app.views.flask_admin_views import init_admin_views
+from app.views.flask_admin_views.base_view import CustomAdminIndexView
 
 amdin_index_view = CustomAdminIndexView(
     name="仪表盘",

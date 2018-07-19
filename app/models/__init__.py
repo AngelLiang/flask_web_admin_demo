@@ -1,3 +1,5 @@
 # coding=utf-8
 
-from .user_model import User, Role, UserRoles
+from .user import User
+from .role import Role
+from .user_roles import UserRoles

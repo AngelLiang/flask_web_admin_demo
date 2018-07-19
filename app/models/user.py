@@ -23,10 +23,13 @@ from app.exception import TokenTimeOutException
 # cache
 from app.utils.model_cache import ModelCacheMixin
 
+# utils
 from .utils import enum_value_cb
 from app.utils.compat import u, b2s
 
 # model
+from .role import Role
+from .user_roles import UserRoles
 
 
 class SexEnum(enum.Enum):
@@ -34,36 +37,6 @@ class SexEnum(enum.Enum):
     female = "女"
     other = "其他"
     empty = "未填"
-
-
-class UserRoles(db.Model):
-    """User和Role的关联表"""
-    __tablename__ = "user_roles"
-    id = db.Column(db.Integer(), primary_key=True)  # 必须加这一条，否则删除的时候sqlite会出错
-    user_id = db.Column(db.Integer(),
-                        db.ForeignKey('users.id', ondelete='CASCADE'))
-    role_id = db.Column(db.Integer(),
-                        db.ForeignKey('roles.id', ondelete='CASCADE'))
-
-
-class Role(Model, SurrogatePK):
-    """Role model"""
-    __tablename__ = 'roles'
-    name = db.Column(db.String(80), unique=True,
-                     index=True, nullable=False)  # 角色名称
-    description = db.Column(db.String(255))  # 角色描述
-
-    def __repr__(self):
-        # return '<Role %r>' % self.name
-        return self.name
-
-    @classmethod
-    def init_role(cls):
-        admin = cls.get_or_create(name=u"管理员")
-        developer = cls.get_or_create(name=u"开发者")
-        default = cls.get_or_create(name=u"默认")
-
-        return admin, developer, default
 
 
 class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
