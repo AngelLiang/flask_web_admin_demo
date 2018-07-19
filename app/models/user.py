@@ -82,21 +82,27 @@ class User(Model, SurrogatePK, UserMixin, ModelCacheMixin):
     def password(self, password):
         """设置密码hash
         使用了 flask-user 则不能进行加密， 因为 flask-user 设置密码之前已经加密了
+        
+        flask-user usage:
+        
+        ```
+        user.password = User.gen_password("password")
+        ```
+
         """
         # for flask-user
-        # from app import user_manager
-        # self.password_hash = user_manager.password_manager.hash_password(password)
         self.password_hash = password
 
         # for werkzeug
         # self.password_hash = generate_password_hash(password)
 
-    def gen_password(self, password):
+    @staticmethod
+    def gen_password(password):
         """
-        为非注册的用户生成密码
+        为非注册的用户生成密码hash
         """
-        self.password_hash = user_manager.password_manager.hash_password(
-            password)
+        from app import user_manager
+        return user_manager.password_manager.hash_password(password)
 
     def verify_password(self, password):
         """验证密码"""
