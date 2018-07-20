@@ -73,7 +73,7 @@ class ProductionConfig(Config):
         Config.init_app(app)
         # 加载配置文件
         conf_path = os.path.join(top_dir, "conf.py")
-        app.config.from_pyfile(conf_path, silent=True)
+        app.config.from_pyfile(conf_path, silent=False)
 
 
 config = {

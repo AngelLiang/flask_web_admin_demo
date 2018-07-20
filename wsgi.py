@@ -1,4 +1,7 @@
 # coding=utf-8
+"""
+gunicorn wsgi:app -c gunicorn_config.py
+"""
 
 import os
 from flask.cli import load_dotenv

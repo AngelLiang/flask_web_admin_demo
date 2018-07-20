@@ -36,10 +36,6 @@ python3 -m venv venv
 
 # 启动服务
 (venv) python3 main.py
-
-# 部署
-(venv) cp deploy/gunicorn_config.py gunicorn_config.py
-(venv) gunicorn wsgi:app -c gunicorn_config.py
 ```
 
 ## Docker
@@ -49,17 +45,17 @@ docker build -t flask_app .
 docker run -p 5000:5000 -ti flask_app 
 ```
 
-## gunicorn启动
+## 使用gunicorn部署
 
 ```bash
-gunicorn main:app -c deploy/gunicorn_config.py
-# OR
-./gunicorn_bootstrap.sh
+(venv) pip3 install gunicorn
+(venv) cp deploy/gunicorn_config.py gunicorn_config.py
+(venv) gunicorn wsgi:app -c gunicorn_config.py
 ```
 
 ## 数据库的迁移
 
-## 初始化
+## 数据库迁移初始化
 
 ```
 flask db init

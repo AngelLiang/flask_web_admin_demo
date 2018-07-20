@@ -1,9 +1,16 @@
-include main.py
-include wsgi.py
-include conf_example.py
-include dockerfile
-include .dockerignore
+include *.py
+include *.txt
+include .flaskenv
+include Pipfile Pipfile.lock
+include dockerfile .dockerignore
 
+recursive-include tests *.py
+
+graft deploy
 graft app/static
 graft app/templates
+
+exclude conf.py
+exclude *.sqlite
+
 global-exclude *.pyc

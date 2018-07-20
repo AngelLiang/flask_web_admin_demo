@@ -3,13 +3,21 @@
 filename: gunicorn_config.py
 
 usage:
-    install: pip install gunicorn
-    start: gunicorn wsgi:app -c gunicorn_config.py
+    install: 
+        pip install gunicorn
+
+    start:
+        gunicorn wsgi:app -c gunicorn_config.py
+
+    start with https:
+        gunicorn wsgi:app --keyfile path/to/server-key.pem --certfile path/to/server-cert.pem
 """
 
 import sys
 import os
 import multiprocessing
+
+###############################################################################
 
 # 获取本文件的所在路径
 curr_dir = os.path.dirname(os.path.realpath(__file__))
@@ -18,9 +26,6 @@ last_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 # 设置Flask App工作目录路径
 app_dir = last_dir
 
-_file_name = os.path.basename(__file__)
-
-# sys.path.insert(0, app_dir)
 ###############################################################################
 
 
@@ -31,7 +36,7 @@ bind = "0.0.0.0:5000"  # default: "127.0.0.1:8000"
 
 # === Server Mechanics ===
 
-chdir = app_dir
+# chdir = app_dir
 
 # Switch worker processes to run as this user.
 # user =
