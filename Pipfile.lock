@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e2df9291426332aed249c366f40637485e91a7e5468b8d310d37b35d8f44ad80"
+            "sha256": "43ad1a28d5545e3984be1c833a9f8e51cf7d91e629810d9bce0c512777fd339d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -277,6 +277,13 @@
             "index": "pypi",
             "version": "==2.2.1"
         },
+        "flask-restless": {
+            "hashes": [
+                "sha256:1de47fe80abd47239c9a1804e0ba5da1d23b9f40cfc26202d16bed37f178c2b6"
+            ],
+            "index": "pypi",
+            "version": "==0.17.0"
+        },
         "flask-sqlalchemy": {
             "hashes": [
                 "sha256:3bc0fac969dd8c0ace01b32060f0c729565293302f0c4269beed154b46bec50b",
@@ -352,6 +359,12 @@
             ],
             "index": "pypi",
             "version": "==1.0"
+        },
+        "mimerender": {
+            "hashes": [
+                "sha256:e7f1377efee18c3f562cee54907a3329223c824332889fb74b745ddfd0a9b1c6"
+            ],
+            "version": "==0.6.0"
         },
         "more-itertools": {
             "hashes": [
@@ -431,6 +444,13 @@
             ],
             "index": "pypi",
             "version": "==1.0.3"
+        },
+        "python-mimeparse": {
+            "hashes": [
+                "sha256:76e4b03d700a641fd7761d3cd4fdbbdcd787eade1ebfac43f877016328334f78",
+                "sha256:a295f03ff20341491bfe4717a39cd0a8cc9afad619ba44b77e86b0ab8a2b8282"
+            ],
+            "version": "==1.6.0"
         },
         "pytz": {
             "hashes": [

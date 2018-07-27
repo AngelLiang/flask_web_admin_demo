@@ -126,6 +126,10 @@ def create_app(config_name):
     from app.apis import api
     app.register_blueprint(api, url_prefix="/api/v1_0")
 
+    from app.flask_restless_custom import api_manager
+    api_manager.init_app(app, flask_sqlalchemy_db=db)
+    api_manager.app = app
+
     # 慢查询日志
     from app.database import init_app
     init_app(app)

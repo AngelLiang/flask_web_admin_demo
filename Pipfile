@@ -49,6 +49,7 @@ vine = "==1.1.4"
 werkzeug = "==0.14.1"
 wtforms = "==2.1"
 pytest = "*"
+flask-restless = "*"
 
 [dev-packages]
 
