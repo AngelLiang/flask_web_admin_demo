@@ -15,7 +15,6 @@ blinker = "==1.4"
 celery = "==3.1.25"
 cffi = "==1.11.5"
 click = "==6.7"
-cryptography = "==2.2.2"
 flask = "==1.0.2"
 flask-admin = "==1.5.1"
 flask-babelex = "==0.9.3"
@@ -50,6 +49,7 @@ werkzeug = "==0.14.1"
 wtforms = "==2.1"
 pytest = "*"
 flask-restless = "*"
+cryptography = "*"
 
 [dev-packages]
 
